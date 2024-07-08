@@ -1,0 +1,10 @@
+- word_som has word som functions. 
+if wanna run it run PDF_word.py file 
+
+- context_som has context functions. 
+if wanna run it run PDF_context.py file
+
+- to run the docment comparing that compare cousin simlirety btween word som and context som,
+  open PDF_avrg_doc.py or PDF_Avg_Doc2.py.
+
+it ll gave alot of vizulising reuslts becouse the for loop. 
