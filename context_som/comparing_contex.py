@@ -1,12 +1,9 @@
-from semantic_syntacic import extract_text_from_pdf
-from semantic_syntacic import semantic_syntactic_analysis
+from semantic_syntacic import extract_text_from_pdf  # Ensure this module exists and is correctly named
 from Vector_Representation import get_word_vectors, aggregate_vectors
 from similarity_measurement import calculate_cosine_similarity
 from train_som import create_and_train_som
 import numpy as np
 from preprocessing_tokenization import preprocess_text
-
-import matplotlib.pyplot as plt
 from Analizing_context import visualize_som_simple
 
 def comparing_context(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
@@ -48,10 +45,11 @@ def comparing_context(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
     # Visualize the SOM
     visualize_som_simple(som, data, labels, title='Document Positions on the Self-Organizing Map')
 
-    return context_cosine_similarity
+    return document_vector1, document_vector2
 
 # Example usage:
-pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (22).pdf'
-pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (23).pdf'
+if __name__ == "__main__":
+    pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (22).pdf'
+    pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (23).pdf'
 
-comparing_context(pdf_path1, pdf_path2)
+    context_vectors = comparing_context(pdf_path1, pdf_path2)

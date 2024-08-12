@@ -20,11 +20,7 @@ def calculate_term_frequency(words):
     freq_list = [(word, freq_distribution[word]) for word in freq_distribution]
     return freq_list
 
-# Calculate term frequency
-# term_frequency = calculate_term_frequency(words)
 
-# Output the results
-# print(term_frequency)
 
 
 

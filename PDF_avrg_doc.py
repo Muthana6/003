@@ -23,17 +23,6 @@ def create_and_train_som(data, x=5, y=5, input_len=None, sigma=1.0, learning_rat
     som.train_random(data, num_iteration=100)
     return som
 
-def plot_som(som, x_dim, y_dim):
-    plt.figure(figsize=(10, 10))
-    for i, x in enumerate(som.get_weights()):
-        for j, y in enumerate(x):
-            plt.text(i, j, f'{i},{j}', ha='center', va='center', bbox=dict(facecolor='white', alpha=0.5, lw=0))
-    plt.xticks(np.arange(x_dim))
-    plt.yticks(np.arange(y_dim))
-    plt.grid()
-    plt.title('Self-Organizing Map Grid')
-    plt.show()
-
 def plot_document_positions(som, data, labels):
     plt.figure(figsize=(10, 10))
     for i, doc in enumerate(data):
@@ -46,8 +35,11 @@ def plot_document_positions(som, data, labels):
     plt.show()
 
 # File paths
-pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (15).pdf'
-pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (16).pdf'
+pdf_path1 = r'C:\Users\skykn\Downloads\main.pdf'
+pdf_path2 = r'C:\Users\skykn\Downloads\duc1.pdf'
+pdf_path3 = r'C:\Users\skykn\Downloads\duc2.pdf'
+pdf_path4 = r'C:\Users\skykn\Downloads\Untitled document (18).pdf'
+pdf_path5 = r'C:\Users\skykn\Downloads\Untitled document (19).pdf'
 
 # List of PDF files to compare
 pdf_files = [pdf_path2, pdf_path2, pdf_path2, pdf_path2]
@@ -60,11 +52,6 @@ for file_path in pdf_files:
     combined_similarity = calculate_combined_similarity(word_cosine, context_cosine)
     results.append((os.path.basename(file_path), combined_similarity))
 
-# Print results
-print("Results:")
-for result in results:
-    print(f"File: {result[0]}, Combined Similarity: {result[1]:.4f}")
-
 # Prepare data for SOM
 combined_similarity_values = [result[1] for result in results]
 combined_similarity_matrix = np.array(combined_similarity_values).reshape(-1, 1)
@@ -72,9 +59,6 @@ combined_similarity_matrix = np.array(combined_similarity_values).reshape(-1, 1)
 # Train SOM
 x_dim, y_dim = 5, 5
 som = create_and_train_som(combined_similarity_matrix, x=x_dim, y=y_dim)
-
-# Visualize SOM
-plot_som(som, x_dim, y_dim)
 
 # Visualize document positions on SOM
 document_labels = [result[0] for result in results]

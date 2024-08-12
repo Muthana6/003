@@ -3,15 +3,20 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from Initial_Similarity_Assessment import compute_similarity
-from word_viz import extract_text_from_pdf
-from stemming_or_limmatization import lemmatize_words
+from word_extraction_and_normalization import extract_and_normalize_words
 from stopword_removal import remove_stopwords
+from stemming_or_limmatization import lemmatize_words
 from text_analysis import calculate_term_frequency
 from Vectorization import calculate_tfidf_from_freq_analysis
-from word_extraction_and_normalization import extract_and_normalize_words
 from word_som_train import create_and_train_som
-from word_viz2 import plot_som_documents
-import matplotlib.pyplot as plt
+from word_viz import visualize_som_simple, extract_text_from_pdf
+
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    with fitz.open(pdf_path) as doc:
+        for page in doc:
+            text += page.get_text()
+    return text
 
 def compare_word(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
     # Extract and preprocess text from the PDFs
@@ -49,7 +54,7 @@ def compare_word(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
     document_labels = ['Document 1', 'Document 2']
 
     # Visualize the SOM with document labels
-    plot_som_documents(som, tfidf_results, document_labels)
+    visualize_som_simple(som, tfidf_results, document_labels, title='Document Positions on the Self-Organizing Map')
 
     # Print the cosine similarity between documents
     cosine_word_similarity = cosine_similarity(tfidf_results)
@@ -83,7 +88,7 @@ def compare_word(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
     return cosine_word_similarity[0][1]
 
 # Example usage:
-pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (15).pdf'
-pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (16).pdf'
+pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (18).pdf'
+pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (23).pdf'
 
 compare_word(pdf_path1, pdf_path2)

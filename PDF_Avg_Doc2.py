@@ -5,17 +5,7 @@ import matplotlib.pyplot as plt
 from minisom import MiniSom  # Ensure you have MiniSom installed: pip install MiniSom
 
 # Add the directory containing the word_som and context_som modules to the sys.path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'word_som'))
-sys.path.append(os.path.join(os.path.dirname(__file__), 'context_som'))
-
-from word_som.PDF_word_main import compare_word
-from context_som.PDF_context_main import comparing_context
-
-
-def calculate_combined_similarity(word_similarity_matrix, context_similarity_matrix, word_weight=0.5,
-                                  context_weight=0.5):
-    combined_similarity_matrix = (word_weight * word_similarity_matrix) + (context_weight * context_similarity_matrix)
-    return combined_similarity_matrix
+ 
 
 
 def prepare_feature_vectors(combined_similarity_matrix):

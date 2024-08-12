@@ -1,5 +1,5 @@
 import spacy
-
+import fitz  # PyMuPDF
 # Load the spaCy model
 nlp = spacy.load('en_core_web_sm')
 
@@ -37,7 +37,7 @@ def semantic_syntactic_analysis(text):
         "dependencies": dependencies,
         "word_cooccurrence": word_cooccurrence
     }
-import fitz  # PyMuPDF
+
 
 def extract_text_from_pdf(pdf_path):
     text = ""

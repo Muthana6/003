@@ -1,7 +1,6 @@
 import nltk
 from nltk.corpus import stopwords
 
-
 # Function to ensure that necessary NLTK resources are downloaded only if they aren't already available
 def download_nltk_resources():
     try:
@@ -15,8 +14,6 @@ def download_nltk_resources():
 
 # Ensure that the stopwords dataset is available
 download_nltk_resources()
-
-
 def remove_stopwords(word_list):
     """
     Removes common stopwords from a list of words.
