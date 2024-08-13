@@ -9,31 +9,44 @@ from preprocessing_tokenization import preprocess_text
 import matplotlib.pyplot as plt
 from Analizing_context import visualize_som_simple
 
-def comparing_context(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
-    # Extract and preprocess text from the PDFs
-    text1 = extract_text_from_pdf(pdf_path1)
-    text2 = extract_text_from_pdf(pdf_path2)
 
-    # Preprocess both texts
-    words1, filtered_sentences1 = preprocess_text(text1)
-    words2, filtered_sentences2 = preprocess_text(text2)
+def comparing_context(pdf_paths, x_dim=5, y_dim=5):
+    # Initialize lists to hold data
+    document_vectors = []
+    labels = []
 
-    # Vector representation for both documents
-    word_vectors1 = get_word_vectors(words1)
-    word_vectors2 = get_word_vectors(words2)
-    document_vector1 = aggregate_vectors(word_vectors1)
-    document_vector2 = aggregate_vectors(word_vectors2)
+    # Process each PDF file
+    for i, pdf_path in enumerate(pdf_paths):
+        # Extract and preprocess text from the PDF
+        text = extract_text_from_pdf(pdf_path)
 
-    # Calculate cosine similarity between the two document vectors
-    context_cosine_similarity = calculate_cosine_similarity(document_vector1, document_vector2)
-    print("Cosine Similarity between Text 1 and Text 2:", context_cosine_similarity)
+        # Preprocess text
+        words, filtered_sentences = preprocess_text(text)
 
-    # Document vectors array for further processing (e.g., SOM training)
-    data = np.array([document_vector1, document_vector2])
-    labels = ["Text 1", "Text 2"]
+        # Vector representation for the document
+        word_vectors = get_word_vectors(words)
+        document_vector = aggregate_vectors(word_vectors)
+
+        # Store document vector and label
+        document_vectors.append(document_vector)
+        labels.append(f"Text {i + 1}")
+
+    # Convert list to NumPy array for SOM training
+    data = np.array(document_vectors)
+
+    # Calculate cosine similarities between all pairs of documents
+    cosine_similarities = np.zeros((len(data), len(data)))
+    for i in range(len(data)):
+        for j in range(i, len(data)):
+            similarity = calculate_cosine_similarity(data[i], data[j])
+            cosine_similarities[i][j] = similarity
+            cosine_similarities[j][i] = similarity
+            if i != j:
+                print(f"Cosine Similarity between Text {i + 1} and Text {j + 1}: {similarity}")
 
     # Create and train the SOM with a fixed random seed for consistency
-    som = create_and_train_som(data, x_size=x_dim, y_size=y_dim, input_len=data.shape[1], sigma=0.3, learning_rate=0.5, num_iteration=5000, random_seed=42)
+    som = create_and_train_som(data, x_size=x_dim, y_size=y_dim, input_len=data.shape[1], sigma=0.3, learning_rate=0.5,
+                               num_iteration=5000, random_seed=42)
 
     print("SOM Training Completed")
 
@@ -48,10 +61,14 @@ def comparing_context(pdf_path1, pdf_path2, x_dim=5, y_dim=5):
     # Visualize the SOM
     visualize_som_simple(som, data, labels, title='Document Positions on the Self-Organizing Map')
 
-    return context_cosine_similarity
+    return cosine_similarities
+
 
 # Example usage:
-pdf_path1 = r'C:\Users\skykn\Downloads\Untitled document (22).pdf'
-pdf_path2 = r'C:\Users\skykn\Downloads\Untitled document (23).pdf'
+pdf_paths = [
+    r'../pdf data/pdf_2.pdf',
+    r'../pdf data/pdf_3.pdf',
+    r'../pdf data/pdf_33 .pdf'
+]
 
-comparing_context(pdf_path1, pdf_path2)
+cosine_similarities = comparing_context(pdf_paths)
